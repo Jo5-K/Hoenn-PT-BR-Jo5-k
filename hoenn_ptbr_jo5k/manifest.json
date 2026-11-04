@@ -1,0 +1,33 @@
+{
+  "id": "hoenn_ptbr_jo5k",
+  "name": "[PT-BR] Hoenn - Jo5-k",
+  "version": "0.1.0-beta.1",
+  "api": 3,
+  "entry": "main.lua",
+  "profile": "content",
+  "game_version": ">=0.3.97 <1.0.0",
+  "games": [
+    "emerald",
+    "ruby",
+    "sapphire"
+  ],
+  "category": "LANGUAGE",
+  "language": true,
+  "priority": 110,
+  "permissions": [
+    "engine_internals"
+  ],
+  "dependencies": [],
+  "optional_dependencies": [],
+  "conflicts": [],
+  "experimental": true,
+  "resource_dependencies": [
+    {
+      "id": "gen3_frlg_pt-br_mod",
+      "version": ">=0.1.6",
+      "required": true
+    }
+  ],
+  "description": "História e diálogos PT-BR de Hoenn. Requer os recursos instalados do mod FRLG PT-BR 0.1.6 ou posterior; não executa os diálogos de Kanto.",
+  "options_schema": "options.lua"
+}
