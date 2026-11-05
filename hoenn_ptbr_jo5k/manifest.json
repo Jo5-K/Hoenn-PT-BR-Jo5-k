@@ -29,5 +29,6 @@
     }
   ],
   "description": "História e diálogos PT-BR de Hoenn. Requer os recursos instalados do mod FRLG PT-BR 0.1.6 ou posterior; não executa os diálogos de Kanto.",
-  "options_schema": "options.lua"
+  "options_schema": "options.lua",
+  "github": "Jo5-K/Hoenn-PT-BR-Jo5-k"
 }
