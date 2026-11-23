@@ -1,9 +1,11 @@
-# Hoenn PT-BR - Jo5-k
+# Hoenn PT-BR — Jo5-k
 
-Tradução independente para Pokémon Emerald, Ruby e Sapphire no G1R 0.3.97+.
+Tradução independente para **Pokémon Emerald, Ruby e Sapphire** no G1Recomp. Versão **0.2.0-beta.1**, API 2, sem dependência do mod de FireRed.
 
-O mod está em `hoenn_ptbr_jo5k/`. Copie essa pasta para `mods/` do G1R. Requer o [FRLG PT-BR oficial 0.1.6+](https://github.com/LordSangreal/gen3_frlg_pt-br_mod) instalado para compartilhar fontes e recursos. O fornecedor continua exclusivo de FireRed/LeafGreen.
+No Android, importe o ZIP da release pelo gerenciador de mods, substitua a versão anterior de Hoenn, ative e reabra o jogo. Não é necessário instalar ou remover o FRLG PT-BR.
 
-[Documentação, créditos e limitações](hoenn_ptbr_jo5k/README.md).
+Esta versão corrige o erro `shared.lua:4 — gerenciador de mods indisponível` e inclui seus próprios recursos de diálogos, interface, itens e descrições. Nomes de naturezas, habilidades e golpes têm opções independentes de português/inglês.
 
-Versão inicial: **0.1.0-beta.1**. A tradução completa de Ruby/Sapphire ainda não está comprovada. Nenhuma ROM é incluída.
+[Instalação, créditos, testes e limites de cobertura](hoenn_ptbr_jo5k/README.md).
+
+O carregador extraído do APK Android 0.3.96 e o código local 0.3.97 foram testados isoladamente. Teste visual no aparelho ainda é necessário. A tradução integral de Ruby/Sapphire e de todas as entradas da Pokédex não está comprovada. Nenhuma ROM ou código do motor é incluído.

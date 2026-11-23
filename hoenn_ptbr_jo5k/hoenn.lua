@@ -77,10 +77,10 @@ local function translatedIR(text, placeholders, controls)
 end
 
 return function(mod, game, shared)
-  if game ~= 'emerald' and game ~= 'ruby' and game ~= 'sapphire' then return end
+  -- Active game is selected by manifest.games, never by engine internals.
   local function catalog(path)
     local body = mod:read(path)
-    return body and assert(loadstring(body, '@' .. path))() or {}
+    return body and assert((loadstring or load)(body, '@' .. path))() or {}
   end
   local schema = catalog('options.lua')
   if mod.options then mod.options:define(schema) end
@@ -116,22 +116,27 @@ return function(mod, game, shared)
     local path = 'lang/hoenn/catalog_' .. part .. '.lua'
     local body = mod:read(path)
     if not body then break end
-    local rows = assert(loadstring(body, '@' .. path))()
+    local rows = assert((loadstring or load)(body, '@' .. path))()
     addRows(rows)
     part = part + 1
   end
   assert(part > 1, 'Hoenn translation catalogs are missing')
   local ui = mod:read('lang/hoenn/ui.lua')
-  if ui then addRows(assert(loadstring(ui, '@lang/hoenn/ui.lua'))()) end
+  if ui then addRows(assert((loadstring or load)(ui, '@lang/hoenn/ui.lua'))()) end
   local counts = { dialogue = 0, strings = 0, records = 0, unsupported = 0, matched_xml_ids = 0 }
   local usedRows = {}
+  -- Emerald's Battle Dome marker is absent from Ruby/Sapphire. No private
+  -- GameVersion object is needed; uncertain ROM layouts use English only.
+  local marker = mod.content.text.get and mod.content.text:get('BattleDome_Text_EmphasizesAtk')
+  local markerText = marker and sourceText(marker)
+  local isEmerald = markerText and normalize(markerText) == 'Emphasizes ATTACK.'
   local function match(source, key)
     local normalized = normalize(source)
     local name = categories[normalized]
     if name then
       return { key or ('name:' .. normalized), source, namesInPortuguese(name.category) and name.target or name.english }
     end
-    local row = game == 'emerald' and byAddress[key]
+    local row = isEmerald and byAddress[key]
     if row and row[4] == normalized then return row end
     if not ambiguous[normalized] and byEnglish[normalized] then return byEnglish[normalized] end
     if uiNormalized[normalized] then return { key or ('ui:' .. normalized), source, uiNormalized[normalized] } end
@@ -139,12 +144,6 @@ return function(mod, game, shared)
   -- All aliases/offsets come from the currently loaded ROM. Never install
   -- Emerald addresses in Ruby/Sapphire; their revisions have different layouts.
   local textSource = mod.content.text
-  local firstKey
-  for key in textSource:each() do firstKey = key; break end
-  if firstKey == nil and mod.datasets and mod.datasets.open then
-    local view = mod.datasets:open(game)
-    if view and view.content then textSource = view.content.text end
-  end
   for key, original in textSource:each() do
     local source, placeholders, controls = sourceText(original)
     if source then
@@ -178,10 +177,6 @@ return function(mod, game, shared)
       local name = categories[normalize(english)]
       mod.content.strings:override(english, namesInPortuguese(name.category) and name.target or name.english)
     end
-  end
-  for key, original in mod.content.strings:each() do
-    local value = translatePlain(original)
-    if value then mod.content.strings:override(key, value); counts.strings = counts.strings + 1 end
   end
   for _, spec in ipairs({
     { 'items', 'name', 'description' }, { 'moves', 'name', 'description' },

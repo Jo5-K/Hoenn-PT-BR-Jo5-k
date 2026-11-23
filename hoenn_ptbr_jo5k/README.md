@@ -1,31 +1,47 @@
-# [PT-BR] Hoenn - Jo5-k — 0.1.0-beta.1
+# Hoenn PT-BR — Jo5-k
 
-Mod independente de história e diálogos de Emerald, Ruby e Sapphire. Requer G1R 0.3.97+ e **gen3_frlg_pt-br_mod 0.1.6 ou posterior instalado**.
+Mod independente de tradução para **Pokémon Emerald, Ruby e Sapphire** no **G1Recomp**. Versão **0.2.0-beta.1**, API 2. Não é um patch de ROM para emuladores comuns.
 
-## Separação
+## Android
 
-O mod oficial de LordSangreal continua original, exclusivo de FireRed/LeafGreen. Este mod não executa seu main.lua, suas features ou seus diálogos. A antiga extensão local FRLG/Hoenn foi separada, não publicada nem enviada novamente ao upstream.
+Importe o ZIP pelo gerenciador de mods do G1Recomp, aceite substituir a versão anterior de **Hoenn - Jo5-k**, ative o mod para o jogo e feche/reabra o jogo. Não é necessário instalar, ativar ou remover o mod de FireRed.
 
-A dependência é de **recursos instalados**, verificada na inicialização. Uma dependência obrigatória convencional do G1R impediria carregar Hoenn porque o fornecedor é incompatível com esses jogos. O campo informativo `resource_dependencies` documenta isso; a verificação efetiva está em shared.lua. O fornecedor pode permanecer desativado em Hoenn: seus arquivos precisam estar presentes. Ausência ou versão antiga geram falha identificada no gerenciador, antes das traduções.
+Se o gerenciador não oferecer a substituição, remova somente a versão antiga de **Hoenn - Jo5-k** e importe o novo ZIP. Não apague saves nem reinstale o G1Recomp. O ID continua `hoenn_ptbr_jo5k`, para substituir a instalação anterior.
 
-Fontes PNG/larguras, strings compartilhadas, menus START, nomes de golpes, nomes/descrições de itens e medidas da Pokédex são lidos diretamente do fornecedor. Atualizar o FRLG pelo gerenciador e reabrir o jogo atualiza esses recursos em Hoenn; este mod não baixa atualizações sozinho nem contém cópias desses arquivos.
+O ZIP contém `manifest.json`, `main.lua`, `shared.lua`, `hoenn.lua`, `options.lua` e `lang/` na raiz. Não importe o ZIP do mod FRLG como se fosse esta tradução.
 
-Não se reutilizam índices numéricos de treinadores de FRLG em Hoenn. Somente nomes/textos com correspondência segura são compartilhados. Não se adicionam espécies, habilidades ou mecânicas ausentes do jogo. Não existe no fornecedor atual um catálogo completo independente de naturezas/habilidades/descrições de todas as espécies; os complementos de Hoenn continuam locais. Descrições específicas de cada edição não são confundidas pela posição ou número do texto.
+## Correção do erro no Android
 
-## Tradução própria
+A versão anterior falhava em `shared.lua:4` com “gerenciador de mods indisponível”, ao acessar `mod.game.mods` para buscar arquivos em outro mod. Esta versão inclui os recursos no próprio pacote e não usa `mod.game`, métodos privados do carregador ou `require` de módulos do motor. Também não exige API 3, recursos externos, permissões internas, arquivos do Windows/Linux ou configuração de caminhos.
 
-`lang/hoenn/catalog_*.lua`: história e diálogos derivados do XML de Emerald, com atribuição a zambrakas, dividido em 21 partes. `ui.lua`, `ui_strings.lua` e `names.lua`: complementos da integração anterior. Créditos dos recursos FRLG: LordSangreal, Breno e Solid One, conforme o README original. Nenhuma ROM ou XML original é distribuído aqui.
+## Conteúdo
 
-Emerald verifica o endereço **e** o texto original. Ruby/Sapphire usam apenas texto original inequívoco, nunca endereços de Emerald. Placeholders e controles nativos são preservados; sem correspondência segura o texto permanece original. Isso não é uma alegação de tradução integral de Ruby/Sapphire.
+- Catálogos de diálogos do XML de Emerald em inglês/PT-BR, com verificação do inglês antes da substituição.
+- Interface, introdução de Birch, itens, descrições de itens/golpes/habilidades e nomes de golpes.
+- Cópias internas dos oito catálogos compatíveis do FRLG PT-BR 0.1.6. O ponto de entrada e os diálogos/endereços de Kanto não são executados.
+- Dados de altura/peso por identificador de espécie, sem renumerar Pokémon ou alterar atributos de batalha.
+- Nomes das naturezas, habilidades e golpes com opções independentes **PORTUGUÊS / ENGLISH**. Descrições permanecem em português. Reabra o jogo após mudar uma opção.
 
-Nomes de naturezas, habilidades e golpes têm preferência Português/English no gerenciador. As escolhas antigas são migradas na instalação local. Reabrir o jogo aplica a escolha e relê recursos atualizados.
+Os nomes próprios das espécies e seus números originais são preservados. A transferência não trata números internos de FireRed como se fossem os de Emerald: itens, golpes e espécies usam identificadores semânticos existentes no jogo carregado.
 
-## Integração e restauração
+## Limites de cobertura
 
-Manifest API 3. A ponte restrita de texto utiliza os acessores IR do próprio carregador, com o dono deste mod, porque a fachada API 3 de strings não representa todos os controles de impressão existentes. As alterações continuam registradas e reversíveis pelo G1R. Essa ponte e a leitura dos recursos instalados exigem `engine_internals`.
+Não é uma tradução comprovada de 100% de cada tela e entrada da Pokédex. Os recursos fornecidos não contêm um catálogo completo de descrições de espécies em português; onde ele não existe, o texto original permanece disponível. Não são inventadas entradas nem apagadas descrições. Os 386 registros de medidas do FRLG não equivalem a 386 descrições de Pokédex traduzidas.
 
-Fontes são decodificadas uma vez e disponibilizadas no cache nativo; não há trabalho por quadro. Uma ponte restrita restaura funções/glifos e invalida o cache ao trocar/recarregar o jogo ou sair para o launcher. Se as fontes não puderem ser decodificadas, permanecem nativas e o motivo é registrado no log. Não há alteração de arquivos do motor.
+Ruby e Sapphire reutilizam apenas correspondências inglesas seguras. O pacote não usa offsets de Emerald sem confirmar o texto da ROM carregada; diferenças de história/revisão permanecem no idioma original. Cobertura real em ROMs Ruby/Sapphire ainda não foi medida.
 
-## Limites
+## Validação
 
-A extensão reaproveita traduções existentes, não cria uma tradução completa nova de Ruby/Sapphire. Alguns catálogos do fornecedor são descritos por ele como provisórios; não se certifica aqui a revisão linguística de cada entrada. A API interna usada pela ponte deve ser revista em atualizações grandes do motor. O gerenciador não trata `resource_dependencies` como dependência convencional: a ausência é detectada pelo próprio mod.
+O teste isolado com o carregador do APK Android 0.3.96, sem o mod FRLG instalado e sem disponibilizar `mod.game`, aplica 8.688 substituições no corpus de Emerald, 2.461 strings e 975 operações de nomes/descrições. Aliases e operações repetidas entram nessas contagens; elas não são contagens de falas únicas.
+
+Também foram executados o carregador 0.3.97, o teste de exclusão de FireRed e os testes das três opções de idioma. Os testes de opções passam no LuaJIT e no Lua 5.5, incluindo carregamento sem `loadstring`.
+
+Esses testes verificam o código do carregador Android; não substituem teste visual em um aparelho físico. A versão exata do aplicativo Android do usuário não foi identificada pelo número.
+
+Para reproduzir, consulte `tests/README.md`. A procedência dos catálogos está em `docs/embedded-resources.json`; as contagens dos XMLs estão em `docs/xml-coverage.json`.
+
+## Créditos
+
+Tradução original FRLG: Breno; port/revisão: LordSangreal; tradução, revisão, gráficos e testes: Solid One, conforme créditos do projeto original. XML PT-BR de Emerald: zambrakas, conforme identificação do arquivo fornecido. Integração de Hoenn: Jo5-k. O ZIP espanhol 0.10.1 foi usado como referência de formato, sem incorporar seus catálogos em espanhol neste pacote.
+
+Fontes, ROMs, saves, APKs e código do motor não são distribuídos. O pacote preserva as fontes nativas do G1Recomp e não substitui funções do motor.
