@@ -50,3 +50,46 @@ else
  assert(loader.mods.gen3_frlg_pt_br_mod==nil)
  print('PASS: standalone native loader, no external mod installed, descriptions and item/move labels loaded')
 end
+
+if (arg[3] or 'emerald') ~= 'firered' and data.gen3Font then
+ assert(data.gen3Font.ttf and data.gen3Font.ttf.file:match('HoennCompact.ttf$'))
+ local layoutChunk=assert(loadfile(root..'layout.lua'))()
+ local layout=layoutChunk({read=function(_,path) return files['mods/hoenn_ptbr_jo5k/'..path] end,content={}})
+ local checked,controlled=0,0
+ local overflow={}
+ for key in pairs(loader.content.text.ops) do
+  local ir=data.gen3Text[key]
+  if not key:match('^gText_XNature') then
+   local col=0
+   for _,node in ipairs(ir or {}) do
+    if node.t=='text' then
+     local value=node.s:gsub('%s+$','')
+     col=col+layout.width(value)
+     if col>208 then overflow[key]=col end
+    elseif node.t=='nl' or node.t=='scroll' or node.t=='para' then col=0
+    elseif node.t=='player' or node.t=='rival' then col=col+42
+    elseif node.t=='strvar' or node.t=='ph' then col=col+(key=='gText_XMinYDotZSec' and 20 or 96)
+    elseif node.t=='ext' then controlled=controlled+1 end
+   end
+  end
+  checked=checked+1
+ end
+ local errors={};for k,v in pairs(overflow) do errors[#errors+1]=k..':'..v end
+ table.sort(errors)
+ if #errors>0 then print('OVERFLOW_KEYS',#errors,table.concat(errors,'; ',1,math.min(20,#errors))) end
+ assert(#errors==0,'translated line too wide')
+ local count=0
+ for id,item in pairs(data.gen3Items.items) do
+  if id>0 and item.name~='????????' and item.description~='?????' then
+   local lines=0
+   for line in (item.description..'\n'):gmatch('(.-)\n') do
+    lines=lines+1;assert(layout.width(line)<=109,item.name..': item description width')
+   end
+   assert(lines<=3,item.name..': item description height');count=count+1
+  end
+ end
+ for _,key in ipairs({'gText_XNatureMetAtYZ','gText_XNatureHatchedAtYZ','gText_XNatureProbablyMetAt'}) do
+  local found=false;for _,node in ipairs(data.gen3Text[key]) do if node.t=='text' and node.s:find('Nv.',1,true) then found=true end end;assert(found,key..': translated memo missing')
+ end
+ print(('PASS: %d installed text overrides checked for width; %d native item descriptions fit; font + dynamic memo registered'):format(checked,count))
+end

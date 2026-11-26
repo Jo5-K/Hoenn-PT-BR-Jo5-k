@@ -76,7 +76,7 @@ local function translatedIR(text, placeholders, controls)
   return out
 end
 
-return function(mod, game, shared)
+return function(mod, game, shared, layout)
   -- Active game is selected by manifest.games, never by engine internals.
   local function catalog(path)
     local body = mod:read(path)
@@ -93,6 +93,8 @@ return function(mod, game, shared)
       if type(english) == 'string' and type(target) == 'string' then uiStrings[english] = target end
     end
   end
+  for source, target in pairs(layout.data.strings) do uiStrings[source] = target end
+  for source, target in pairs(uiStrings) do uiStrings[source] = layout.plain(source, target) end
   local names = catalog('lang/hoenn/names.lua')
   local uiNormalized, categories = {}, {}
   for english, target in pairs(uiStrings) do uiNormalized[normalize(english)] = target end
@@ -149,7 +151,8 @@ return function(mod, game, shared)
     if source then
       local row = match(source, key)
       if row then
-        local ir = translatedIR(row[3], placeholders, controls)
+        local ir = translatedIR(layout.clean(row[3]), placeholders, controls)
+        if ir and (key:match('^g3:') or key:find('_Text',1,true) or not key:match('^[gs]') or key:find('Birch',1,true) or key:match('^sPartnerTexts') or key == 'gText_MomOrDadMightLikeThisProgram') then ir = layout.dialogue(ir) end
         if ir then
           mod.content.text:override(key, ir)
           -- Native menus/intro resolve through RomText before script text.
@@ -204,7 +207,7 @@ return function(mod, game, shared)
     for id, value in pairs(shared.catalog(spec[1])) do
       -- Only patch semantic IDs that exist in the active game's registry.
       if registry.get and registry:get(id) and type(value) == 'string' then
-        registry:patch(id, { [spec[3]] = cleanBreaks(value) })
+        registry:patch(id, { [spec[3]] = spec[3] == 'description' and layout.item(id, value) or layout.clean(value) })
         counts.records = counts.records + 1
       end
     end
@@ -223,7 +226,17 @@ return function(mod, game, shared)
       end
     end
   end
+  for _, key in ipairs({'gText_XNature','gText_XNatureMetAtYZ','gText_XNatureMetSomewhereAt','gText_XNatureHatchedAtYZ','gText_XNatureHatchedSomewhereAt','gText_XNatureProbablyMetAt','gText_XNatureObtainedInTrade','gText_XNatureFatefulEncounter'}) do
+    local original = mod.content.text.get and mod.content.text:get(key)
+    local value = layout.memo(key, original)
+    if value then
+      mod.content.text:override(key,value)
+      if mod.content.rom_text then mod.content.rom_text:override(key,value) end
+      counts.dialogue = counts.dialogue + 1
+    end
+  end
   mod.exports = mod.exports or {}
+  mod.exports.layout = layout.stats
   mod.exports.hoenn = counts
   for key in pairs(usedRows) do
     if key:match('^g3:') then counts.matched_xml_ids = counts.matched_xml_ids + 1 end

@@ -10,5 +10,6 @@ return function(mod)
     return chunk()
   end
   local shared = module('shared.lua')(mod)
-  return module('hoenn.lua')(mod, 'hoenn', shared)
+  local layout = module('layout.lua')(mod)
+  return module('hoenn.lua')(mod, 'hoenn', shared, layout)
 end

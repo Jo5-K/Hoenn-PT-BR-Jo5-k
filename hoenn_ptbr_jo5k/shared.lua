@@ -7,7 +7,7 @@ return function(mod)
     species_metrics = true, start_menu = true,
   }
   local cache = {}
-  local shared = { version = 'embedded-frlg-0.1.6' }
+  local shared = { version = 'embedded-frlg-0.1.7' }
   function shared.catalog(name)
     assert(allowed[name], 'Hoenn PT-BR: catálogo não permitido: ' .. tostring(name))
     if not cache[name] then

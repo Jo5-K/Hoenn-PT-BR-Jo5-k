@@ -1,39 +1,46 @@
 {
   "source_repository": "LordSangreal/gen3_frlg_pt-br_mod",
-  "source_version": "0.1.6",
+  "source_version": "0.1.7",
   "runtime_dependency": false,
   "files": {
     "lang/shared/item_descriptions.lua": {
-      "sha256": "99cdbe8370cdc9a033c54bff5fee5e5122a7d580e1a9f6387e141ea7b6889cf6",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "38cefc0906573c7414866b322dacfee7e58411c3a21e3b4270acd64d50ce8bb3",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/item_names.lua": {
-      "sha256": "da40e87f99dfb3ae4032371971fb20da79c8a5cedc66e4e51a7e33201d286c4d",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "130f7c21a4fe7294af01bfe4f73d2258d4b338891ad2e4d1f2f0143b86c62860",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/move_names.lua": {
-      "sha256": "21d0d80ff3f7099f0ff4108925623f86b88bfcf21367e09370d23f95eb1e7992",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "847fb779c439ddb2b9062fdb00a2d420f0876f16b9bb2d1276c8e86dc9c331a6",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/species_metrics.lua": {
-      "sha256": "7549c6e9d55fc701e70f80d6c46d59acc0bc35dd32f6c4bf9324bf76360666f8",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "5908173ca4c0faa1121a2149951e15cbf527c368bd6677d29f97699b3aa59798",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/start_menu.lua": {
-      "sha256": "d22412f2564bf8127c4a5452f0628f58d725094811264fa07c2363069dd061c5",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "b14b2facc3321396e6bcb96cdf4c839fec111ddaaaf081a26ac7e24db43787f9",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/strings.lua": {
       "sha256": "e2c9fe4668b893b1843354549f86c5484475dd21bbf224f8b57eb791f4d49a09",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/strings_by_english.lua": {
       "sha256": "c60d248519f65adc4b6758a9c2ec1697bf8639251f2e3ec8232a2094e7fb1e17",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
     "lang/shared/trainer_class_names.lua": {
-      "sha256": "4b9a99d969e0ff70cd64dc8b7cea7e74d8f9a8d49b9af1d9fbd480fa1264e58f",
-      "origin": "FRLG PT-BR 0.1.6 (embedded copy)"
+      "sha256": "659d9c62375c95788e5c13b03825311a6682a9884bd15053ace6332a9f103344",
+      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     }
+  },
+  "source_commit": "15161735609f9c5dc68d36cb51c6b275a7c4d106",
+  "font": {
+    "file": "fonts/HoennCompact.ttf",
+    "origin": "FRLG PT-BR 0.1.7 latin_small_fg.png glyph outlines and latin_small_widths; m/w spacing included",
+    "registration": "public content.font ttf API, size 16",
+    "sha256": "bdffdf6aea8b354acd9f46f8193b0a9ac498f310925a7501ed62f86a8e607efb"
   }
 }

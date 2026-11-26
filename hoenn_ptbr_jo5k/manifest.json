@@ -1,7 +1,7 @@
 {
   "id": "hoenn_ptbr_jo5k",
   "name": "[PT-BR] Hoenn - Jo5-k",
-  "version": "0.2.0-beta.1",
+  "version": "0.2.0",
   "api": 2,
   "entry": "main.lua",
   "profile": "content",
@@ -19,7 +19,7 @@
   "optional_dependencies": [],
   "conflicts": [],
   "experimental": false,
-  "description": "Tradução PT-BR independente de Emerald, Ruby e Sapphire. Inclui os próprios catálogos de diálogos, interface, itens e descrições; não requer o mod de FireRed.",
+  "description": "Tradução PT-BR independente de Hoenn, com texto ajustado às janelas, Trainer Memo e acentos. Não requer FRLG.",
   "options_schema": "options.lua",
   "github": "Jo5-K/Hoenn-PT-BR-Jo5-k"
 }
