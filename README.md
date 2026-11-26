@@ -1,6 +1,6 @@
 # Hoenn PT-BR — Jo5-k
 
-Mod independente de tradução para Pokémon Emerald, Ruby e Sapphire no G1Recomp. Versão **0.2.1**, API 2. Não é patch de ROM para emuladores comuns.
+Mod independente de tradução para Pokémon Emerald, Ruby e Sapphire no G1Recomp. Versão **0.2.2**, API 2. Não é patch de ROM para emuladores comuns.
 
 ## Instalação
 

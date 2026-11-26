@@ -5,6 +5,33 @@ local TAG = {
   ['{LEFT_ARROW}'] = '←', ['{RIGHT_ARROW}'] = '→',
 }
 local PH = { player = 1, strvar1 = 2, strvar2 = 3, strvar3 = 4, rival = 6 }
+-- Stat windows reserve a separate column for values. Keep these labels within 36 px.
+local STAT_LABELS = {
+  ['gText_HP4'] = 'PS',
+  ['gOtherText_HP'] = 'PS',
+  ['gText_MaxHP'] = 'PS MÁX',
+  ['gUnknown_0840165C[0]'] = 'PS MÁX',
+  ['gText_Attack3'] = 'ATAQUE',
+  ['gOtherText_Attack'] = 'ATAQUE',
+  ['gText_Attack'] = 'ATAQUE',
+  ['gUnknown_0840165C[2]'] = 'ATAQUE',
+  ['gText_Defense3'] = 'DEFESA',
+  ['gOtherText_Defense'] = 'DEFESA',
+  ['gText_Defense'] = 'DEFESA',
+  ['gUnknown_0840165C[4]'] = 'DEFESA',
+  ['gText_SpAtk4'] = 'AT ESP',
+  ['gOtherText_SpAtk'] = 'AT ESP',
+  ['gText_SpAtk'] = 'AT ESP',
+  ['gUnknown_0840165C[1]'] = 'AT ESP',
+  ['gText_SpDef4'] = 'DF ESP',
+  ['gOtherText_SpDef'] = 'DF ESP',
+  ['gText_SpDef'] = 'DF ESP',
+  ['gUnknown_0840165C[3]'] = 'DF ESP',
+  ['gText_Speed2'] = 'VEL.',
+  ['gOtherText_Speed'] = 'VEL.',
+  ['gText_Speed'] = 'VEL.',
+  ['gUnknown_0840165C[5]'] = 'VEL.',
+}
 local function normalize(s)
   return (s:gsub('…', '...'):gsub('«', '"'):gsub('»', '"')
     :gsub('“', '"'):gsub('”', '"'):gsub('’', "'"):gsub('‘', "'"):gsub('¥', '$')
@@ -149,7 +176,8 @@ return function(mod, game, shared, layout)
   for key, original in textSource:each() do
     local source, placeholders, controls = sourceText(original)
     if source then
-      local row = match(source, key)
+      local label = STAT_LABELS[key]
+      local row = label and { key, source, label } or match(source, key)
       if row then
         local ir = translatedIR(layout.clean(row[3]), placeholders, controls)
         if ir and (key:match('^g3:') or key:find('_Text',1,true) or not key:match('^[gs]') or key:find('Birch',1,true) or key:match('^sPartnerTexts') or key == 'gText_MomOrDadMightLikeThisProgram') then ir = layout.dialogue(ir) end
