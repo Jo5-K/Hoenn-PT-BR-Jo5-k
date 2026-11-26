@@ -1,7 +1,7 @@
 {
   "id": "hoenn_ptbr_jo5k",
   "name": "[PT-BR] Hoenn - Jo5-k",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "api": 2,
   "entry": "main.lua",
   "profile": "content",
@@ -19,7 +19,7 @@
   "optional_dependencies": [],
   "conflicts": [],
   "experimental": false,
-  "description": "Tradução PT-BR independente de Hoenn, com texto ajustado às janelas, Trainer Memo e acentos. Não requer FRLG.",
+  "description": "Tradução PT-BR independente de Hoenn. Preserva a interface e a fonte ativa; acrescenta apenas os caracteres com til ausentes e ajusta os textos.",
   "options_schema": "options.lua",
   "github": "Jo5-K/Hoenn-PT-BR-Jo5-k"
 }

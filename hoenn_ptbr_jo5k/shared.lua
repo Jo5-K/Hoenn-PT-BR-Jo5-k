@@ -4,7 +4,7 @@ return function(mod)
   local allowed = {
     strings = true, strings_by_english = true, item_names = true,
     item_descriptions = true, move_names = true, trainer_class_names = true,
-    species_metrics = true, start_menu = true,
+
   }
   local cache = {}
   local shared = { version = 'embedded-frlg-0.1.7' }

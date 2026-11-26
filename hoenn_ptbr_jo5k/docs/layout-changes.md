@@ -1,9 +1,11 @@
-# Ajustes de diagramação — 0.2.0
+# Correção de escopo — 0.2.1
 
-O pacote anterior tinha os catálogos FRLG 0.1.6, mas não os ajustes de fonte. Esta versão incorpora os catálogos 0.1.7 e deriva uma fonte TTF compacta dos glifos pequenos dessa versão, incluindo os acentos e as larguras corrigidas de m/w. O registro usa exclusivamente a API pública; não depende de outro mod nem altera o motor.
+A 0.2.0 registrava uma fonte compacta para todo o alfabeto latino. Isso afetava menus e batalha mesmo sem registrar uma interface nova. A 0.2.1 remove esse recurso: o complemento contém somente Ã/Õ/ã/õ, e a lista `tiles` da API pública preserva todos os demais glifos na fonte ativa. Uma fonte TTF já configurada por outro mod não é substituída.
 
-As descrições são revisadas pelo contexto de Hoenn. Não basta copiar a frase de FireRed: a descrição da habilidade em Emerald tem apenas uma linha. Textos mais curtos conservam o efeito descrito. As descrições de máquinas usam o mapeamento TM/HM do próprio Emerald. O Trainer Memo usa modelos próprios com os mesmos campos dinâmicos de natureza, nível, local e cores.
+Os quatro glifos vêm de `latin_normal_fg.png` do FRLG 0.1.7, com baseline original e avanço da letra-base de Emerald. Não se importam as demais letras nem a tabela compacta de espaçamento. A API pública oferece um único tamanho para esses quatro glifos; ela não escolhe variantes normal/pequena por janela. As letras preexistentes de ambas as fontes são preservadas pixel a pixel.
 
-Os diálogos são medidos em pixels na inicialização. Palavras e códigos de controle são preservados; linhas adicionais usam a rolagem nativa. Textos com controles que não possam ser mapeados com segurança permanecem originais. A reparação de caixa corrige acentos internos como nÃo/nÍvel sem mudar MÃE ou nomes iniciados por letra acentuada.
+As descrições foram revistas para o tamanho original das letras e para os limites de cada janela. A quebra dos diálogos usa palavras inteiras. Uma palavra isolada maior que a janela não é cortada pelo mod; o corpus verificado não contém esse caso. Não existe redução dinâmica por frase nem uma nova aba nesta versão. Para evitar cortes, os textos dos contextos conhecidos cabem nos espaços existentes.
 
-A auditoria automatizada cobre o corpus disponível de Emerald e contextos conhecidos; não comprova todas as combinações de variáveis, telas de outros mods, resoluções ou ROMs Ruby/Sapphire. Não foi feito teste visual em aparelho Android físico. Descrições completas de espécies na Pokédex ainda dependem de um catálogo PT-BR específico.
+Foram removidos os catálogos de medidas de espécies e de estrutura do menu inicial, sem uso necessário para a tradução. Os demais catálogos contêm apenas texto. A associação TM/HM foi corrigida: os índices zero do mapa de máquinas e dos nomes de golpes não podem ser descartados ao exportar os dados.
+
+Testes: letras originais normais/pequenas idênticas no renderizador; apenas quatro caracteres elegíveis ao complemento; fonte de outro mod preservada; nenhum registro de interface/batalha/espécies escrito; propriedades nativas de itens preservadas; descrições e Trainer Memo dentro dos limites conhecidos. A compatibilidade visual com outros mods e Android físico ainda precisa de teste no aplicativo.

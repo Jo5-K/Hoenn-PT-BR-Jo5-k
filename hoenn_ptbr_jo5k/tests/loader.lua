@@ -4,6 +4,11 @@ local root=assert(arg[2], 'mod root required')..'/'
 local files={}
 local p=hostio.popen('find '..string.format("'%s'",root:gsub("'","'\"'\"'"))..' -type f')
 for f in p:lines() do local h=assert(hostio.open(f,'rb'));files['mods/hoenn_ptbr_jo5k/'..f:sub(#root+1)]=h:read('*a');h:close() end;p:close()
+if arg[5]=='existing-font' then
+ files['mods/font_fixture/manifest.json']='{"id":"font_fixture","name":"Existing font fixture","version":"1.0.0","api":2,"entry":"main.lua","profile":"content","games":["emerald"],"priority":100}'
+ files['mods/font_fixture/main.lua']="return function(mod) mod.content.font:register('ttf',{file=mod.assets:path('other.ttf'),size=18}) end"
+ files['mods/font_fixture/other.ttf']='font registration fixture'
+end
 local fs={
  read=function(path) return files[path] end,
  write=function(path,s) files[path]=s;return true end,
@@ -51,8 +56,37 @@ else
  print('PASS: standalone native loader, no external mod installed, descriptions and item/move labels loaded')
 end
 
-if (arg[3] or 'emerald') ~= 'firered' and data.gen3Font then
- assert(data.gen3Font.ttf and data.gen3Font.ttf.file:match('HoennCompact.ttf$'))
+if (arg[3] or 'emerald') ~= 'firered' then
+ assert(data.gen3Font,'accent registration missing')
+ if arg[5]=='existing-font' then
+  assert(data.gen3Font.ttf.file:match('font_fixture/other.ttf$') and data.gen3Font.ttf.size==18,'existing font changed')
+  for _,op in ipairs(loader.content.font.ops.ttf or {}) do assert(op.owner~='hoenn_ptbr_jo5k','Hoenn overrode existing font') end
+  print('PASS: existing font preserved by actual content loader')
+ else
+  assert(data.gen3Font.ttf and data.gen3Font.ttf.file:match('HoennAccents.ttf$'))
+ end
+ local allowed={text=true,rom_text=true,strings=true,font=true,items=true,moves=true,trainers=true}
+ for name,registry in pairs(loader.content) do
+  if type(registry)=='table' and registry.ops and not allowed[name] then
+   for _,ops in pairs(registry.ops) do for _,op in ipairs(ops) do assert(op.owner~='hoenn_ptbr_jo5k','non-text registry changed: '..name) end end
+  end
+ end
+ local function same(a,b)
+  if type(a)~=type(b) then return false end
+  if type(a)~='table' then return a==b end
+  for k,v in pairs(a) do if not same(v,b[k]) then return false end end
+  for k in pairs(b) do if a[k]==nil then return false end end
+  return true
+ end
+ local originals=assert(hostloadfile(cache..'items/pack.lua'))()
+ for id,item in pairs(originals.items) do
+  for field,value in pairs(item) do
+   if field~='name' and field~='description' then
+    assert(same(value,data.gen3Items.items[id][field]),'item gameplay changed: '..id..' '..field)
+   end
+  end
+ end
+ print('PASS: no interface/battle/pokemon registry writes; all native item gameplay fields preserved')
  local layoutChunk=assert(loadfile(root..'layout.lua'))()
  local layout=layoutChunk({read=function(_,path) return files['mods/hoenn_ptbr_jo5k/'..path] end,content={}})
  local checked,controlled=0,0

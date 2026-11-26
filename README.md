@@ -1,47 +1,35 @@
 # Hoenn PT-BR — Jo5-k
 
-Mod independente de tradução para **Pokémon Emerald, Ruby e Sapphire** no **G1Recomp**. Versão **0.2.0**, API 2. Não é um patch de ROM para emuladores comuns.
+Mod independente de tradução para Pokémon Emerald, Ruby e Sapphire no G1Recomp. Versão **0.2.1**, API 2. Não é patch de ROM para emuladores comuns.
 
-## Android
+## Instalação
 
-Importe o ZIP pelo gerenciador de mods do G1Recomp, aceite substituir a versão anterior de **Hoenn - Jo5-k**, ative o mod para o jogo e feche/reabra o jogo. Não é necessário instalar, ativar ou remover o mod de FireRed.
+Importe o ZIP pelo gerenciador de mods, substitua a versão anterior de Hoenn e feche/reabra o jogo. Não requer o mod FireRed. O ID permanece `hoenn_ptbr_jo5k`. Não apague saves nem reinstale o aplicativo.
 
-Se o gerenciador não oferecer a substituição, remova somente a versão antiga de **Hoenn - Jo5-k** e importe o novo ZIP. Não apague saves nem reinstale o G1Recomp. O ID continua `hoenn_ptbr_jo5k`, para substituir a instalação anterior.
+## Apenas tradução
 
-O ZIP contém `manifest.json`, `main.lua`, `shared.lua`, `hoenn.lua`, `options.lua`, `layout.lua`, `fonts/` e `lang/` na raiz. Não importe o ZIP do mod FRLG como se fosse esta tradução.
+O mod altera textos e nomes. Não registra telas, janelas, interface de batalha, paletas, imagens de interface ou layouts. Não altera atributos de Pokémon, efeitos de golpes ou propriedades de itens. O motor e o mod FRLG original não são modificados.
 
-## Correção do erro no Android
+A fonte compacta global da versão 0.2.0 foi removida. A fonte ativa mantém seus glifos originais. Um recurso complementar contém exclusivamente **Ã, Õ, ã e õ**, derivados da fonte normal FRLG PT-BR 0.1.7, com o avanço da letra-base na fonte original do Emerald. Os outros acentos, letras, números e símbolos continuam nativos. Se outro mod já registrou uma fonte TTF, Hoenn preserva essa configuração; os acentos nesse caso dependem da cobertura da fonte escolhida pelo outro mod.
 
-A versão anterior falhava em `shared.lua:4` com “gerenciador de mods indisponível”, ao acessar `mod.game.mods` para buscar arquivos em outro mod. Esta versão inclui os recursos no próprio pacote e não usa `mod.game`, métodos privados do carregador ou `require` de módulos do motor. Também não exige API 3, recursos externos, permissões internas, arquivos do Windows/Linux ou configuração de caminhos.
+Descrições usam os limites das janelas de Hoenn, com redação concisa e quebras por palavras. Diálogos usam a próxima linha e a rolagem nativa; nenhuma palavra é partida em letras. Não se cria uma aba nova nem se deslocam os campos abaixo. Esta versão não reduz dinamicamente a fonte de uma frase: os textos revisados cabem com o tamanho original.
 
-## Conteúdo
+## Conteúdo e opções
 
-- Catálogos de diálogos do XML de Emerald em inglês/PT-BR, com verificação do inglês antes da substituição.
-- Interface, introdução de Birch, itens, descrições de itens/golpes/habilidades e nomes de golpes.
-- Cópias internas dos oito catálogos compatíveis do FRLG PT-BR 0.1.7. O ponto de entrada e os diálogos/endereços de Kanto não são executados.
-- Dados de altura/peso por identificador de espécie, sem renumerar Pokémon ou alterar atributos de batalha.
-- Nomes das naturezas, habilidades e golpes com opções independentes **PORTUGUÊS / ENGLISH**. Descrições permanecem em português. Reabra o jogo após mudar uma opção.
+- Diálogos do XML inglês/PT-BR de Emerald, com conferência do texto original.
+- Tradução dos textos de menus, itens, descrições de golpes/habilidades e nomes. Traduzir um rótulo não substitui sua interface.
+- Seis catálogos de texto compatíveis do FRLG PT-BR 0.1.7 incorporados ao próprio pacote. Código gráfico, diálogos de Kanto e medidas de espécies não são incluídos.
+- Opções independentes PORTUGUÊS / ENGLISH para nomes de naturezas, habilidades e golpes. Descrições ficam em português. Reabra o jogo ao mudar as opções.
+- Correção da associação de descrições TM/HM conforme os índices da ROM, sem perder o índice zero na conversão dos dados.
 
-Os nomes próprios das espécies e seus números originais são preservados. A transferência não trata números internos de FireRed como se fossem os de Emerald: itens, golpes e espécies usam identificadores semânticos existentes no jogo carregado.
+## Validação e limites
 
-## Limites de cobertura
+Passam os testes de opções e diagramação em LuaJIT e Lua 5.5. O corpus de Emerald aplica 8.696 substituições (inclui aliases), valida 309 descrições nativas de itens, 411 textos de contextos conhecidos e 400 combinações de Trainer Memo. As verificações preservam controles e variáveis. O teste visual automatizado com o renderizador real compara pixels das letras normais/pequenas antes e depois, confirma que apenas quatro caracteres usam o complemento e mede as descrições.
 
-Não é uma tradução comprovada de 100% de cada tela e entrada da Pokédex. Os recursos fornecidos não contêm um catálogo completo de descrições de espécies em português; onde ele não existe, o texto original permanece disponível. Não são inventadas entradas nem apagadas descrições. Os 386 registros de medidas do FRLG não equivalem a 386 descrições de Pokédex traduzidas.
+Não houve teste visual em aparelho Android físico. Valores dinâmicos e fontes/layouts de outros mods podem ter limites diferentes. Ruby/Sapphire reutilizam apenas correspondências inglesas seguras; sua cobertura completa ainda não foi medida. Não há catálogo completo de descrições de espécies na Pokédex em português: entradas sem tradução permanecem disponíveis no idioma original.
 
-Ruby e Sapphire reutilizam apenas correspondências inglesas seguras. O pacote não usa offsets de Emerald sem confirmar o texto da ROM carregada; diferenças de história/revisão permanecem no idioma original. Cobertura real em ROMs Ruby/Sapphire ainda não foi medida.
-
-## Validação
-
-O carregador atual, sem FRLG instalado, aplica 8.696 substituições de texto de Emerald; aliases entram nessa contagem. A auditoria verifica a largura das linhas desse corpus, reservando espaço para variáveis. Descrições usam limites próprios: habilidades 144 pixels/1 linha, golpes 154 pixels/2 linhas, itens 109 pixels/3 linhas. Foram verificados 411 textos distintos desses contextos, 309 descrições nativas de itens e 400 combinações de Trainer Memo (naturezas PT/EN, nível e local).
-
-A renderização da fonte foi validada com LÖVE e o medidor real do motor. Os testes de opções e diagramação passam em LuaJIT e Lua 5.5. As verificações preservam placeholders, controles e atributos de jogo. O ajuste de diálogo respeita duas linhas visíveis e a rolagem do jogo, sem apagar o restante da fala.
-
-Esses testes verificam o código do carregador Android; não substituem teste visual em um aparelho físico. A versão exata do aplicativo Android do usuário não foi identificada pelo número.
-
-Para reproduzir, consulte `tests/README.md`. A procedência dos catálogos está em `docs/embedded-resources.json`; as contagens dos XMLs estão em `docs/xml-coverage.json`.
+Consulte `tests/README.md`, `docs/embedded-resources.json` e `docs/layout-changes.md`.
 
 ## Créditos
 
-Tradução original FRLG: Breno; port/revisão: LordSangreal; tradução, revisão, gráficos e testes: Solid One, conforme créditos do projeto original. XML PT-BR de Emerald: zambrakas, conforme identificação do arquivo fornecido. Integração de Hoenn: Jo5-k. O ZIP espanhol 0.10.1 foi usado como referência de formato, sem incorporar seus catálogos em espanhol neste pacote.
-
-ROMs, saves, APKs e código do motor não são distribuídos. A fonte compacta incluída deriva dos glifos do FRLG PT-BR 0.1.7 e é registrada pela API pública de fontes, sem substituir funções do motor.
+Tradução FRLG: Breno; port/revisão: LordSangreal; tradução, revisão, gráficos e testes: Solid One, conforme créditos originais. XML PT-BR de Emerald: zambrakas. Integração Hoenn: Jo5-k. Referência: https://github.com/LordSangreal/gen3_frlg_pt-br_mod/releases/tag/v0.1.7 . ROMs, saves, APKs e código do motor não são distribuídos.

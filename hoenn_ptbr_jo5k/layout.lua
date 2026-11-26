@@ -8,8 +8,22 @@ return function(mod)
   end
   local metrics, data = read('fonts/metrics.lua'), read('lang/layout.lua')
   local L = { data = data, metrics = metrics, stats = { reflowed = 0, repaired_case = 0 } }
-  if mod.content.font and mod.assets and mod.assets.path then
-    mod.content.font:register('ttf', { file = mod.assets:path('fonts/HoennCompact.ttf'), size = 16 })
+  if mod.content.font and mod.assets and mod.assets.path
+      and not (mod.content.font.get and mod.content.font:get('ttf')) then
+    -- The API's tiles list keeps these characters on the active native font.
+    -- Exclude its entire eligible range except the four missing tilde letters.
+    local tiles = {}
+    for cp = 0x20, 0x24F do
+      if cp <= 0x7E or cp >= 0xC0 then
+        if cp ~= 0xC3 and cp ~= 0xD5 and cp ~= 0xE3 and cp ~= 0xF5 then
+          if cp < 128 then tiles[#tiles + 1] = string.char(cp)
+          elseif cp < 2048 then tiles[#tiles + 1] = string.char(192 + math.floor(cp / 64), 128 + cp % 64) end
+        end
+      end
+    end
+    mod.content.font:register('ttf', {
+      file = mod.assets:path('fonts/HoennAccents.ttf'), size = 16, tiles = tiles,
+    })
   end
   local char = '[%z\1-\127\194-\244][\128-\191]*'
   local lower = { ['Ã']='ã', ['Õ']='õ', ['Í']='í', ['Á']='á', ['É']='é', ['Ó']='ó', ['Ú']='ú', ['Â']='â', ['Ê']='ê', ['Ô']='ô' }
@@ -102,15 +116,9 @@ return function(mod)
           local gap = spaces ~= '' and col > 0 and ' ' or ''
           local w = L.width(word)
           if col > 0 and col + L.width(gap) + w > 208 then newline(); gap = '' end
-          if w <= 208 then append({t='text',s=gap .. word}); col=col+L.width(gap)+w
-          else
-            -- Exceptional long words are split by UTF-8 character, not byte.
-            for ch in word:gmatch(char) do
-              local cw=metrics[ch] or 4
-              if col+cw>208 then newline() end
-              append({t='text',s=ch});col=col+cw
-            end
-          end
+          -- Keep each word intact. The next native line/page handles wrapping;
+          -- never split a UTF-8 word into individual letters.
+          append({t='text',s=gap .. word}); col=col+L.width(gap)+w
         end
         if node.s:match('%s$') and col>0 then append({t='text',s=' '});col=col+(metrics[' '] or 4) end
       elseif node.t=='nl' or node.t=='scroll' then newline()
@@ -154,7 +162,7 @@ return function(mod)
       if rule.special then append(out,{text(rule.level),{t='nl'},text('no Nv. '),dynamic(0),dynamic(3),dynamic(1),text('.')})
       else
         append(out,{text(rule.level),dynamic(0),dynamic(3),dynamic(1),text('.')})
-        if rule.place then append(out,{{t='nl'},dynamic(0),dynamic(4),dynamic(1),text('.')}) end
+        if rule.place then append(out,{{t='nl'},dynamic(0),dynamic(4),dynamic(1)}) end
         if rule.unknown then append(out,{{t='nl'},text('Local desconhecido.')}) end
       end
     end

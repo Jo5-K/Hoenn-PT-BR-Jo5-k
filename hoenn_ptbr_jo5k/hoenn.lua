@@ -219,13 +219,6 @@ return function(mod, game, shared, layout)
       end
     end
   end
-  if mod.content.pokemon then
-    for id, value in pairs(shared.catalog('species_metrics')) do
-      if mod.content.pokemon:get(id) and type(value)=='table' and type(value[1])=='number' and type(value[2])=='number' then
-        mod.content.pokemon:patch(id,{dexEntry={heightM=value[1],weightKg=value[2]}})
-      end
-    end
-  end
   for _, key in ipairs({'gText_XNature','gText_XNatureMetAtYZ','gText_XNatureMetSomewhereAt','gText_XNatureHatchedAtYZ','gText_XNatureHatchedSomewhereAt','gText_XNatureProbablyMetAt','gText_XNatureObtainedInTrade','gText_XNatureFatefulEncounter'}) do
     local original = mod.content.text.get and mod.content.text:get(key)
     local value = layout.memo(key, original)

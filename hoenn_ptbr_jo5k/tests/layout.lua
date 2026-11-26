@@ -3,8 +3,16 @@ local function read(path) local f=assert(io.open(path,'rb'));local s=f:read('*a'
 local fonts={}
 local mod={read=function(_,p) return read(p) end,content={font={register=function(_,id,value) fonts[id]=value end}},assets={path=function(_,p) return p end}}
 local layout=assert(loadfile('layout.lua'))()(mod)
-assert(fonts.ttf.file=='fonts/HoennCompact.ttf' and fonts.ttf.size==16)
+assert(fonts.ttf.file=='fonts/HoennAccents.ttf' and fonts.ttf.size==16)
 assert(layout.clean('MÃE nÃo nÍvel São Ícaro')=='MÃE não nível São Ícaro')
+local excluded={};for _,ch in ipairs(fonts.ttf.tiles) do excluded[ch]=true end
+for _,ch in ipairs({'A','a','O','o','á','Á','é','ç','1','!','Ä','Ö'}) do assert(excluded[ch],ch..': native glyph replaced') end
+for _,ch in ipairs({'Ã','Õ','ã','õ'}) do assert(not excluded[ch],ch..': missing accent excluded') end
+local registered=false
+local existing={file='other-mod/battle.ttf',size=18}
+local other={read=mod.read,assets=mod.assets,content={font={get=function() return existing end,register=function() registered=true end}}}
+assert(loadfile('layout.lua'))()(other)
+assert(not registered,'another mod font was overridden')
 local strings=0
 for en,text in pairs(layout.data.strings) do
  local rule=assert(layout.data.budgets[en]);local n=0
@@ -17,11 +25,13 @@ for id,text in pairs(layout.data.items) do
  local n=0;for line in (text..'\n'):gmatch('(.-)\n') do n=n+1;assert(layout.width(line)<=109,id..': bag width') end
  assert(n<=3,id..': bag height');items=items+1
 end
+assert(layout.data.items.TM01==layout.wrap(layout.data.strings["A powerful loyalty attack. The\nuser flinches if hit."] or 'Ataca por último. Falha se sofrer dano.',109))
+assert(layout.data.items.TM14:find('Nevasca',1,true),'TM14 must describe Blizzard, not a shifted move')
 local cases={
  {{t='text',s=string.rep('nÃo cabe ',80)},{t='eos'}},
  {{t='text',s='Olá '},{t='player'},{t='text',s=', este item será seu: '},{t='strvar',n=1},{t='text',s='.'},{t='eos'}},
  {{t='ext',cmd=1,args={2}},{t='text',s=string.rep('Água e ação. ',30)},{t='para'},{t='text',s='Fim.'},{t='eos'}},
- {{t='text',s=string.rep('Ó',100)},{t='eos'}},
+
 }
 local function semantic(ir)
  local out={};for _,node in ipairs(ir) do
@@ -40,6 +50,9 @@ for _,original in ipairs(cases) do
   elseif node.t=='strvar' or node.t=='dynamic' or node.t=='ph' then col=col+96 end
  end
 end
+local unbroken=string.rep('Ó',100)
+local oversized=layout.dialogue({{t='text',s=unbroken},{t='eos'}})
+assert(#oversized==2 and oversized[1].s==unbroken,'long word was split')
 local names=assert(loadfile('lang/hoenn/names.lua'))()
 local source={};for n=0,5 do source[#source+1]={t='dynamic',n=n} end;source[#source+1]={t='eos'}
 local memoCount=0

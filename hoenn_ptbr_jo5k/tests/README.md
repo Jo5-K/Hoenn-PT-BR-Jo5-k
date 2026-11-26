@@ -22,3 +22,5 @@ O último argumento é a pasta que contém `data/generated/gba/` do Emerald. O t
 É possível substituir `emerald` por `firered` para verificar que o manifesto exclui FRLG. Nos testes com `ruby`/`sapphire`, o corpus continua sendo de Emerald; isso testa roteamento, não cobertura dessas ROMs.
 
 O teste de diagramação valida as larguras, alturas, acentos, preservação de controles e 400 combinações do Trainer Memo. O teste do carregador verifica as linhas do corpus e as descrições nativas de itens, além do registro público da fonte. Valores dinâmicos usam reservas conservadoras; o cronômetro usa campos numéricos de até três dígitos.
+
+A 0.2.1 testa que o complemento afeta apenas Ã/Õ/ã/õ, preserva uma fonte TTF já configurada, não parte palavras, mantém os índices TM01/TM14 e não escreve registros de interface/batalha/espécies. Todas as propriedades nativas dos itens, exceto nome/descrição, são comparadas com o cache de origem.

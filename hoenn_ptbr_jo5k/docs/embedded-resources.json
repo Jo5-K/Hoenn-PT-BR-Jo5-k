@@ -15,14 +15,6 @@
       "sha256": "847fb779c439ddb2b9062fdb00a2d420f0876f16b9bb2d1276c8e86dc9c331a6",
       "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
     },
-    "lang/shared/species_metrics.lua": {
-      "sha256": "5908173ca4c0faa1121a2149951e15cbf527c368bd6677d29f97699b3aa59798",
-      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
-    },
-    "lang/shared/start_menu.lua": {
-      "sha256": "b14b2facc3321396e6bcb96cdf4c839fec111ddaaaf081a26ac7e24db43787f9",
-      "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
-    },
     "lang/shared/strings.lua": {
       "sha256": "e2c9fe4668b893b1843354549f86c5484475dd21bbf224f8b57eb791f4d49a09",
       "origin": "FRLG PT-BR 0.1.7 (embedded copy)"
@@ -38,9 +30,15 @@
   },
   "source_commit": "15161735609f9c5dc68d36cb51c6b275a7c4d106",
   "font": {
-    "file": "fonts/HoennCompact.ttf",
-    "origin": "FRLG PT-BR 0.1.7 latin_small_fg.png glyph outlines and latin_small_widths; m/w spacing included",
-    "registration": "public content.font ttf API, size 16",
-    "sha256": "bdffdf6aea8b354acd9f46f8193b0a9ac498f310925a7501ed62f86a8e607efb"
+    "file": "fonts/HoennAccents.ttf",
+    "glyphs": [
+      "Ã",
+      "Õ",
+      "ã",
+      "õ"
+    ],
+    "origin": "FRLG PT-BR 0.1.7 latin_normal_fg.png; native Emerald base-letter advances",
+    "registration": "public content.font ttf API; all other eligible characters excluded with tiles; existing TTF preserved",
+    "sha256": "7f137571a7c55c01fb436063e4b19c69d8f708a571b983c627eeeebf0b85a4a6"
   }
 }
